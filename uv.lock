@@ -3,6 +3,12 @@ revision = 3
 requires-python = ">=3.12"
 
 [[package]]
+name = "clibuilder"
+version = "0.1.7"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/b0/35b04066421ab6052c36446e9728d0d4f1f418c25e97d4f24453cdf26565/clibuilder-0.1.7.tar.gz", hash = "sha256:e4388e5acb2081b7f533ef09c44120cbf36cdf40fc4555daf80ab4dae78f7720", size = 2711, upload-time = "2015-06-28T01:43:54.101Z" }
+
+[[package]]
 name = "click"
 version = "8.4.2"
 source = { registry = "https://pypi.org/simple" }
@@ -52,11 +58,15 @@ name = "rag-search-engine"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "clibuilder" },
     { name = "nltk" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "nltk", specifier = "==3.9.1" }]
+requires-dist = [
+    { name = "clibuilder", specifier = ">=0.1.7" },
+    { name = "nltk", specifier = "==3.9.1" },
+]
 
 [[package]]
 name = "regex"
