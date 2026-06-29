@@ -153,7 +153,6 @@ def main() -> None:
         case "bm25search":
             bm25search(args.query, args.limit)
             pass
-
         case _:
             parser.print_help()
 

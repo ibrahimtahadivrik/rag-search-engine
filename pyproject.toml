@@ -6,4 +6,6 @@ requires-python = ">=3.12"
 dependencies = [
     "clibuilder>=0.1.7",
     "nltk==3.9.1",
+    "numpy==2.3.3",
+    "sentence-transformers>=5.6.0",
 ]
