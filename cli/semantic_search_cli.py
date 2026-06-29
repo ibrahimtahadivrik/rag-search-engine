@@ -1,9 +1,18 @@
 import argparse
+import json
 
 from lib import semantic_search
 
 
-
+def search(query, limit:5):
+    semanticModel = semantic_search.SemanticSearch()
+    data = json.load(open("data/movies.json"))
+    movies = data["movies"]
+    semanticModel.load_or_create_embeddings(movies)
+    s_list = semanticModel.search(query, limit)
+    for i, s in enumerate(s_list):
+        print(f"{i+1}. {s[1]['title']} (score: {s[0]})")
+        print(f"  {s[1]["description"]}")
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Semantic Search CLI")
@@ -18,6 +27,10 @@ def main() -> None:
 
     embed_query_parser = subparsers.add_parser("embed_query", help="Embed query into embeddings")
     embed_query_parser.add_argument("query", type=str, help="Query to embed")
+
+    search_parser = subparsers.add_parser("search", help="Semanric search")
+    search_parser.add_argument("query", type=str, help="Query to search")
+    search_parser.add_argument("--limit", type=int, nargs='?', default=5, help="Limit the number of results")
 
     args = parser.parse_args()
 
@@ -37,6 +50,10 @@ def main() -> None:
 
         case "embed_query":
             semantic_search.embed_query_text(args.query)
+            pass
+
+        case "search":
+            search(args.query, args.limit)
             pass
 
         case _:
