@@ -5,7 +5,7 @@ from .search_utils import (
     DEFAULT_ALPHA,
     DEFAULT_SEARCH_LIMIT,
     format_search_result,
-    load_movies,
+    load_movies, RRF_K,
 )
 from .semantic_search import ChunkedSemanticSearch
 
@@ -32,7 +32,7 @@ class HybridSearch:
         combined = combine_weighted_search_results(bm25_results, semantic_results, alpha)
         return combined[:limit]
 
-    def rrf_search(self, query: str, k: int, limit: int = DEFAULT_SEARCH_LIMIT) -> list[dict]:
+    def rrf_search(self, query: str, k: int = RRF_K, limit: int = DEFAULT_SEARCH_LIMIT) -> list[dict]:
         bm25_results = self._bm25_search(query, limit * 500)
         semantic_results = self.semantic_search.search_chunks(query, limit * 500)
 
@@ -122,11 +122,11 @@ def combine_weighted_search_results(
 
     return sorted(hybrid_results, key=lambda x: x["score"], reverse=True)
 
-def rrf_score(rank: int, k: int = 60) -> float:
+def rrf_score(rank: int, k: int = RRF_K) -> float:
     return 1 / (k + rank)
 
 def combine_rrf_search_results(
-    bm25_results: list[dict], semantic_results: list[dict], k :int = 60
+    bm25_results: list[dict], semantic_results: list[dict], k :int = RRF_K
 ) -> list[dict]:
     combined_ranks = {}
 
@@ -189,7 +189,7 @@ def weighted_search_command(
     }
 
 def rrf_search_command(
-        query: str, k: int = 60, limit: int = DEFAULT_SEARCH_LIMIT
+        query: str, k: int = RRF_K, limit: int = DEFAULT_SEARCH_LIMIT
 ) -> dict:
     movies = load_movies()
     searcher = HybridSearch(movies)
